@@ -1,15 +1,24 @@
 # HEE HOO VM
 
-Very stupid, unenlightened, primitive machine. 
+Very stupid, unenlightened, primitive machine.
 
 Bare essentials to be turing complete. Just some registers and a memory block.
 
-## Install and Usage
+## Installation
 
-| To Do | Command       |
-| :---- | :------------ |
-| Build | `cargo build` |
-| Run   | `cargo run`   |
+Requires a Rust toolchain (see [rustup.rs](https://rustup.rs)). Clone the repo, then build with Cargo:
+
+```sh
+cargo build
+```
+
+## Usage
+
+The `heehoo` crate is currently a binary that hard-codes a demo program in [main.rs](crates/heehoo/src/main.rs) and runs it. Run it with:
+
+```sh
+cargo run
+```
 
 ## System Architecture
 
