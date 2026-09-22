@@ -5,8 +5,6 @@
 //! [`Vm::execute`] runs a [`Binary`] to completion by fetching and dispatching
 //! instructions in a loop until a [`Instruction::Halt`] is reached.
 
-use crate::Instruction::Halt;
-
 /// A single decoded VM instruction.
 ///
 /// Only a subset of the full instruction set described in the project
