@@ -1,4 +1,4 @@
-//! The VM interpreter.
+//! The VM interpreter: where instructions go to get executed.
 
 use crate::binary::{Binary, Instruction};
 
@@ -36,30 +36,37 @@ impl Default for Vm {
 impl Vm {
     /// Runs `binary` to completion.
     ///
-    /// Loads `binary.initial_data` into data memory starting at address `0`,
-    /// sets the instruction pointer to `binary.start_ptr`, then repeatedly
-    /// fetches and executes instructions until an [`Instruction::Halt`] is
-    /// reached.
+    /// Loads [`Binary::initial_data`] into data memory starting at address
+    /// `0`, sets the instruction pointer to [`Binary::init_start_ptr`], then
+    /// repeatedly fetches and executes instructions until an
+    /// [`Instruction::Halt`] is reached.
     ///
     /// # Parameters
-    /// - `binary` (`Binary`): the program to run.
+    /// - `binary` (`impl Binary`): the program to run.
     ///
     /// # Side Effects
     /// Mutates `self`'s instruction pointer, registers, and data memory.
     ///
     /// # Panics
-    /// - If execution reaches an instruction pointer with no corresponding
-    ///   entry in `binary.text` (see [`Vm::fetch_instruction`]).
-    /// - If `binary.initial_data` is longer than data memory
+    /// - If execution reaches an instruction pointer `binary` has no
+    ///   instruction for (see [`Vm::fetch_instruction`]).
+    /// - If `binary`'s initial data is longer than data memory
     ///   ([`MEMCELL_COUNT`] words).
-    pub fn execute(&mut self, binary: Binary) {
+    ///
+    /// # Examples
+    /// ```no_run
+    /// let mut vm = Vm::default();
+    /// vm.execute(StupidBinary::load("heehoo.bin"));
+    /// // HEE HOO
+    /// ```
+    pub fn execute(&mut self, binary: impl Binary) {
         // Initialize data
-        for (index, cell) in binary.initial_data.iter().enumerate() {
+        for (index, cell) in binary.initial_data().iter().enumerate() {
             self.memory[index] = *cell;
         }
 
         // Initialize instruction pointer
-        self.inst_ptr = binary.start_ptr;
+        self.inst_ptr = binary.init_start_ptr();
 
         // Start loop
         'main_loop: loop {
@@ -81,8 +88,8 @@ impl Vm {
     /// advances the pointer by one.
     ///
     /// # Parameters
-    /// - `binary` (`&Binary`): the program being executed, whose `text` is indexed by
-    ///   the current instruction pointer.
+    /// - `binary` (`&impl Binary`): the program being executed, asked for the
+    ///   instruction at the current instruction pointer.
     ///
     /// # Returns
     /// A copy of the fetched [`Instruction`].
@@ -91,13 +98,12 @@ impl Vm {
     /// Increments `self`'s instruction pointer.
     ///
     /// # Panics
-    /// Panics if the instruction pointer is out of bounds for
-    /// `binary.text`, or (in debug builds) if incrementing it overflows.
-    fn fetch_instruction(&mut self, binary: &Binary) -> Instruction {
-        let Some(inst) = binary.text.get(usize::from(self.inst_ptr)) else {
-            panic!("Invalid instruction address {}", self.inst_ptr);
-        };
+    /// Panics if `binary` panics on the current instruction pointer (see
+    /// [`Binary::fetch_instruction`]), or (in debug builds) if incrementing
+    /// it overflows.
+    fn fetch_instruction(&mut self, binary: &impl Binary) -> Instruction {
+        let inst = binary.fetch_instruction(self.inst_ptr);
         self.inst_ptr += 1;
-        *inst
+        inst
     }
 }
