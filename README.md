@@ -1,5 +1,7 @@
 # HEE HOO VM
 
+[hooooo](heeeeeeeeeeeeeeeeeeeee.png)
+
 Very stupid, unenlightened, primitive machine.
 
 Bare essentials to be turing complete. Just some registers and a memory block.

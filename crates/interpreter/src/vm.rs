@@ -1,6 +1,5 @@
 //! The VM interpreter: where instructions go to get executed.
-
-use crate::binary::{Binary, Instruction};
+use binary::{Binary, Instruction};
 
 /// Number of general-purpose registers available to the [`Vm`].
 const REG_COUNT: usize = 4;
@@ -37,9 +36,10 @@ impl Vm {
     /// Runs `binary` to completion.
     ///
     /// Loads [`Binary::initial_data`] into data memory starting at address
-    /// `0`, sets the instruction pointer to [`Binary::init_start_ptr`], then
-    /// repeatedly fetches and executes instructions until an
-    /// [`Instruction::Halt`] is reached.
+    /// `0`, sets the instruction pointer to [`Binary::init_start_ptr`].
+    /// After that, instructions are repeatedly fetched and executed until an
+    /// [`Instruction::Halt`] is reached. After that the binary is also taken
+    /// out back and executed.
     ///
     /// # Parameters
     /// - `binary` (`impl Binary`): the program to run.
