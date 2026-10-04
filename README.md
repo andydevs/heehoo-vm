@@ -1,6 +1,6 @@
 # HEE HOO VM
 
-[hooooo](heeeeeeeeeeeeeeeeeeeee.png)
+![hooooo](heeeeeeeeeeeeeeeeeeeee.png)
 
 Very stupid, unenlightened, primitive machine. [hee hoo](https://youtu.be/afL6VW2lGWI?t=683)
 
