@@ -2,7 +2,7 @@
 
 [hooooo](heeeeeeeeeeeeeeeeeeeee.png)
 
-Very stupid, unenlightened, primitive machine.
+Very stupid, unenlightened, primitive machine. [hee hoo](https://youtu.be/afL6VW2lGWI?t=683)
 
 Bare essentials to be turing complete. Just some registers and a memory block.
 
